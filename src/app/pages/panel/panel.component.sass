@@ -1,0 +1,68 @@
+.content
+    height: 100%
+    
+    text-align: center
+    color: #FFFFFF
+    margin-left: 260px
+    @media (max-width: 600px)
+         margin-left: 0
+    
+
+.title
+    text-align: left
+    font-size: 7vw
+    padding: 20vw 0 0 4vw
+    span
+        padding-top: 1%
+        display: block
+        font-size: 80%
+    @media (min-width: 600px)
+        padding: 6vw 0 0 4vw
+        font-size: 4.5vw
+        span
+            font-size: 60%
+
+.video
+    display: inline-block
+    margin: 3vw 0 0 5vw
+    width: 40vw
+    height: calc(40vw / (16/9))
+    border: solid 3px #FFFFFF
+    border-radius: 7px
+    @media (max-width: 600px)
+        width: 90vw
+        height: calc(90vw / (16/9))
+        
+
+.info
+    z-index: 3
+    text-align: left
+    width: 100%
+    .buttons
+        display: inline
+        @media (max-width: 800px)
+            margin: 2vw 0 0 5vw
+            display: block
+    p
+        margin: 1vw 0 0 5vw
+        font-size: 120%
+        display: inline-block
+        margin-right: 2%
+    .button-media
+        margin-right: 2%
+        width: 40px
+        height: 40px
+        border-radius: 50%
+        border: none
+        &:hover
+            background-color: #cfcfcf
+
+
+.illustration
+    z-index: 0
+    width: 23vw 
+    position: fixed
+    bottom:0px
+    right:0 
+    @media (max-width: 600px)
+        width: 35vw 

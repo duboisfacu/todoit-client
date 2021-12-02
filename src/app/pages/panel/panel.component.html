@@ -1,0 +1,41 @@
+<ng-sidebar-container>
+  <ng-sidebar [autoCollapseWidth]="600" [(opened)]="opened">
+    <app-navbar></app-navbar>
+  </ng-sidebar>
+
+  <div ng-sidebar-content class="h-100 ">
+    <button class="openbar" (click)="toggleSidebar()"></button>
+    <div class="content">
+      <h3 class="title">¿No sabes qué hacer?<span>¡Tranquilo, nosotros si!</span></h3>
+
+      <div class="col-2 ">
+        <div class="embed-responsive embed-responsive-16by9 parent">
+          <iframe class="embed-responsive-item video" src="https://www.youtube.com/embed/5gKrbPL-I2o"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <img class="illustration" src="../assets/panel-illustration.svg" />
+      <div class="info ">
+        <p>Seguinos en nuestras redes:</p>
+        <div class="buttons">
+          <a href="https://www.instagram.com/" target="_blank">
+          <button class="button-media">
+            <img height="20px" src="../assets/ig.svg" />
+          </button></a>
+          <a href="https://www.facebook.com/" target="_blank">
+          <button class="button-media">
+            <img height="20px" src="../assets/fb.svg" />
+          </button></a>
+          <a href="https://web.whatsapp.com/" target="_blank">
+          <button class="button-media">
+            <img height="20px" src="../assets/wpp.svg" />
+          </button>
+        </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</ng-sidebar-container>

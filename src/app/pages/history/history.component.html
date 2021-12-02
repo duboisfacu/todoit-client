@@ -1,0 +1,55 @@
+<ng-sidebar-container>
+  <ng-sidebar [autoCollapseWidth]="600" [(opened)]="opened">
+    <app-navbar></app-navbar>
+  </ng-sidebar>
+
+  <div ng-sidebar-content class="h-100 ">
+    <button class="openbar" (click)="toggleSidebar()"></button>
+
+    <div class="content">
+      <img class="pageLogo" src="../assets/buttons/historyw.svg" />
+      <h2 class="title">Historial de viajes</h2>
+
+      <form class="text-center frm" action="#">
+        <div class="mb-5">
+          <input (keyup)="onChange(serch.value)" class="form-control" placeholder="Filtrar viaje" #serch>
+          <button *ngIf="cross" class="btn-cross"(click)="onDelete(''); serch.value = '' ; serch.focus()">x</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table ">
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Modelo</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Envío</th>
+              <th scope="col">Entregado</th>
+            </tr>
+
+            <tr *ngFor="let object of list2 | keyvalue;let i=index">
+              <td>{{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}</td>
+              <td>{{list2[i]['mark']}}</td>
+              <td>{{list2[i]['model']}}</td>
+              <td>
+                {{list2[i]['travelEquipmentDTOs'][0]['statusTravel'] > 4 
+                && list2[i]['travelEquipmentDTOs'][0]['statusTravel'] < 9 
+                ? 'A reparar' : 'Reparado'}}
+              </td>
+              <td>{{
+                    (list2[i]['travelEquipmentDTOs'][0]['statusTravel'] < 3 
+                    || ((list2[i]['travelEquipmentDTOs'][0]['statusTravel'] >5) && list2[i]['travelEquipmentDTOs'][0]['statusTravel'] <8) 
+                    || list2[i]['travelEquipmentDTOs'][0]['statusTravel'] == 10)
+                    ? 'Pendiente' 
+                    : (list2[i]['travelEquipmentDTOs'][0]['statusTravel'] == 3) 
+                    ? 'En curso'
+                    : 'Entregado'
+                  }}
+              </td>
+              <td>{{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}</td>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-sidebar-container>
