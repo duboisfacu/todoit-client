@@ -9,7 +9,12 @@ import { Router } from '@angular/router';
 export class E404Component implements OnInit {
 
   navigate(prop:string) {
-    this.router.navigate([`/${prop}`]);
+    if (localStorage.getItem('name')){
+   this.router.navigate([`/panel`]);
+    }else{
+      this.router.navigate([`/${prop}`]);
+    }
+
 }
   constructor(private router: Router) { }
   ngOnInit(): void {
