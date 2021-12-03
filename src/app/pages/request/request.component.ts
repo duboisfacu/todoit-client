@@ -26,9 +26,14 @@ export class RequestComponent implements OnInit {
       this.requestForm.reset()
     }
     )
+    this.sent = true
+
   }
   
-  
+  onFocus(){
+    this.sent = false
+  }
+  public sent = false
   public requestForm !: FormGroup;
   constructor( private router: Router, private fb: FormBuilder, private sr: SignUpService) {
 

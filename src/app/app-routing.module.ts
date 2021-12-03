@@ -9,13 +9,14 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { E404Component } from './pages/e404/e404.component';
+import { BlockLandingGuard } from './guards/block-landing.guard';
 
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: SignUpComponent},
+  {path: '', component: HomeComponent, canActivate: [BlockLandingGuard]},
+  {path: 'login', component: LoginComponent, canActivate: [BlockLandingGuard]},
+  {path: 'register', component: SignUpComponent, canActivate: [BlockLandingGuard]},
   {path: 'panel', component: PanelComponent, canActivate: [AuthGuard] },
   {path: 'request', component: RequestComponent, canActivate: [AuthGuard] },
   {path: 'status', component: StatusComponent, canActivate: [AuthGuard] },
