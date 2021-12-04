@@ -9,17 +9,9 @@ import {
   SignUpService
 } from 'src/app/services/sign-up.service';
 import {
-  Equipment
-} from 'src/app/components/model/equipment';
-import {
-  filter
-} from 'rxjs/operators';
-import {
   FormControl
 } from '@angular/forms';
-import {
-  isNull
-} from '@angular/compiler/src/output/output_ast';
+
 
 
 @Component({
@@ -31,45 +23,39 @@ export class HistoryComponent implements OnInit {
   onChange(search: string) {
 
     const filteredData = this.list.filter((value: {
-      mark: string | null;model: string | null;failure: string | null;travelEquipmentDTOs: {
-        0: {
-          operationDate: string;statusTravel: string
-        }
-      }
+      mark: string | null;model: string | null;failure: string | null;travelEquipmentDTOs: [{
+        operationDate: string;statusTravel: string;statusEquipment: string
+      }]
     }) => {
       const searchStr = search.toLowerCase()
-      // const statusTravelNumber : number = parseInt(value.travelEquipmentDTOs[0].statusTravel)
-      // const status = () => (
-      //   statusTravelNumber > 3 || (statusTravelNumber  > 5 && statusTravelNumber < 10) || statusTravelNumber  === 5 ? 'Pendiente'
-      //   : statusTravelNumber == 3 || statusTravelNumber == 8? 'En curso' : 'Entregado')
-
-      // const travel = () => (statusTravelNumber > 4 && statusTravelNumber <9 ? 'A reparar' : 'Reparado')
-
-      // console.log(value.travelEquipmentDTOs[0].statusTravel)
-      // const statusMatches = value.travelEquipmentDTOs[0].statusTravel(searchStr); 
-      let failureMatches = false
       let dateMatches = false
       let markMatches = false
       let modelMatches = false
+      let statusTravelMatches = false
+      let statusEquipmentMatches = false
+
       if (value.mark || value.model) {
-        // failureMatches = value.failure!.toLowerCase().includes(searchStr) 
-        dateMatches = value.travelEquipmentDTOs[0].operationDate!.substring(0, 10).includes(searchStr);
+        dateMatches = value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].operationDate!.substring(0, 10).includes(searchStr);
         markMatches = value.mark!.toLowerCase().includes(searchStr);
         modelMatches = value.model!.toLowerCase().includes(searchStr);
+        statusTravelMatches = value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel!.toLowerCase().includes(searchStr);
+        statusEquipmentMatches = value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusEquipment!.toLowerCase().includes(searchStr);
+
       }
       if (search != "") {
         this.cross = true
       } else {
         this.cross = false
       }
-      return markMatches || modelMatches || dateMatches
+      return markMatches || modelMatches || dateMatches || statusTravelMatches || statusEquipmentMatches
+
 
     });
     this.list2 = filteredData
     return true
   }
 
-  onDelete(search: any) {
+  onDelete(search: string) {
     const filteredData = this.list.filter((value: {
       mark: string
     }) => {
@@ -93,9 +79,8 @@ export class HistoryComponent implements OnInit {
   }
 
   public list!: Equipments
-  public list2!: any
+  public list2! : any
   public cross!: boolean
-  // public status !: number
   public textInputControl: FormControl = new FormControl();
 
 
@@ -105,24 +90,37 @@ export class HistoryComponent implements OnInit {
     this.rq.status((JSON.parse(localStorage.getItem('token') || '{}')))
       .subscribe((respo: Equipments) => {
         this.list = respo
+
+
         this.list2 = this.list.filter((value: {
-          mark: string | null;model: string | null;failure: string | null;travelEquipmentDTOs: {
-            0: {
-              operationDate: string;statusTravel: string
-            }
-          }
+          mark: string | null;model: string | null;failure: string | null;travelEquipmentDTOs: [{
+            operationDate: string;statusTravel: string;statusEquipment: string
+          }]
         }) => {
+
+
+          let statusTravelNumber = parseInt(value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel)
+          let statusEquipmentNumber = parseInt(value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel)
+
+          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel = statusTravelNumber < 3 || (statusTravelNumber > 5 && statusTravelNumber < 8) || statusTravelNumber === 10 ? 'Pendiente' :
+            statusTravelNumber == 3 ? 'En curso' : 'Entregado'
+
+          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusEquipment = statusEquipmentNumber > 4 && statusEquipmentNumber < 9 ? 'A reparar' : 'Reparado'
+
           let dateMatches = false
           let markMatches = false
           let modelMatches = false
+          let statusTravelMatches = false
+          let statusEquipmentMatches = false
           if (value.mark || value.model) {
             dateMatches = value.travelEquipmentDTOs[0].operationDate!.substring(0, 10).includes("");
             markMatches = value.mark!.toLowerCase().includes("");
             modelMatches = value.model!.toLowerCase().includes("");
+            statusTravelMatches = value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel!.includes("");
+            statusEquipmentMatches = value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusEquipment!.includes("");
           }
-          return markMatches || modelMatches || dateMatches
+          return markMatches || modelMatches || dateMatches || statusTravelMatches || statusEquipmentMatches
         })
-
       })
   }
 

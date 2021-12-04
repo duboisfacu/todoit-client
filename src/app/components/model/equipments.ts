@@ -1,5 +1,6 @@
 export interface Equipments  {
-  filter: any;[index: number]: {
+  filter: any;
+  [index: number]: {
   equipmentId: number,
   mark: string,
   model: string,

@@ -13,7 +13,7 @@
       <form class="text-center frm" action="#">
         <div class="mb-5">
           <input (keyup)="onChange(serch.value)" class="form-control" placeholder="Filtrar viaje" #serch>
-          <button *ngIf="cross" class="btn-cross"(click)="onDelete(''); serch.value = '' ; serch.focus()">x</button>
+          <button *ngIf="cross" class="btn-cross" (click)="onDelete(''); serch.value = '' ; serch.focus()">x</button>
         </div>
         <div class="table-responsive">
           <table class="table ">
@@ -27,25 +27,23 @@
             </tr>
 
             <tr *ngFor="let object of list2 | keyvalue;let i=index">
-              <td>{{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}</td>
+              <td>
+                {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['operationDate'].substring(0, 10)}}
+              </td>
               <td>{{list2[i]['mark']}}</td>
               <td>{{list2[i]['model']}}</td>
               <td>
-                {{list2[i]['travelEquipmentDTOs'][0]['statusTravel'] > 4 
-                && list2[i]['travelEquipmentDTOs'][0]['statusTravel'] < 9 
-                ? 'A reparar' : 'Reparado'}}
+                {{
+                  list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusEquipment']
+                }}
               </td>
               <td>{{
-                    (list2[i]['travelEquipmentDTOs'][0]['statusTravel'] < 3 
-                    || ((list2[i]['travelEquipmentDTOs'][0]['statusTravel'] >5) && list2[i]['travelEquipmentDTOs'][0]['statusTravel'] <8) 
-                    || list2[i]['travelEquipmentDTOs'][0]['statusTravel'] == 10)
-                    ? 'Pendiente' 
-                    : (list2[i]['travelEquipmentDTOs'][0]['statusTravel'] == 3) 
-                    ? 'En curso'
-                    : 'Entregado'
-                  }}
+                list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel']
+              }}
               </td>
-              <td>{{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}</td>
+              <td>
+                {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['operationDate'].substring(0, 10)}}
+              </td>
             </tr>
           </table>
         </div>
