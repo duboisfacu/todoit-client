@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators  } from '@angular/forms';
 import { SignUpService } from 'src/app/services/sign-up.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-request',
@@ -23,10 +24,11 @@ export class RequestComponent implements OnInit {
     }
     console.log(currentClient)
     this.sr.request(currentClient).subscribe(resp => {
+
       this.requestForm.reset()
+      this.sent = true
     }
     )
-    this.sent = true
 
   }
   

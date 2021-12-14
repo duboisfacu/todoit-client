@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators  } from '@angular/forms';
 import { SignUpService } from '../../services/sign-up.service';
+import { User } from 'src/app/components/model/user';
 
 
 @Component({
@@ -16,8 +17,25 @@ export class SignUpComponent implements OnInit {
 
   submitForm(){
     this.su.register(this.signupForm.value)
-    .subscribe(res=>{})
-    this.signupForm.reset()
+    .subscribe(res =>{
+      console.log(res.id)
+      let obje = {
+        id: res.id,
+        email: this.signupForm.value.email,
+        fullName: this.signupForm.value.fullName ,
+        address: this.signupForm.value.address,
+        cellPhone: this.signupForm.value.cellPhone,
+        password: this.signupForm.value.password ,
+        isAccepted: true,
+        isDeleted: false,
+        rol: {
+          id:3
+        }
+      }      
+      this.su.Altaregister(obje).subscribe(res2 =>{
+        console.log(res2)})
+    })
+    // this.signupForm.reset()
     this.isSent = true
   }
   navigate(prop:string) {

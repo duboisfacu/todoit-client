@@ -15,12 +15,22 @@
           <input (keyup)="onChange(serch.value)" class="form-control" placeholder="Filtrar viaje" #serch>
           <button *ngIf="cross" class="btn-cross" (click)="onDelete(''); serch.value = '' ; serch.focus()">x</button>
         </div>
-        <div class="table-responsive">
-          <table class="table ">
+
+<div *ngFor="let object of list2 | keyvalue;let i=index">
+  <div class="card shadow" *ngIf="list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'En tu posesión' || list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'Completado'">
+    <p><span>Fecha de pedido:</span> {{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}</p>
+    <p><span>Equipo:</span> {{list2[i]['mark']}} {{list2[i]['model']}}</p>
+    <p><span>Estado del envío:</span> {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'Completado' ? 'Completado' : 'A confirmar'}}</p>
+    <p><span>Fecha de entrega:</span> {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['operationDate'].substring(0, 10)}}</p>
+    <button *ngIf="list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'En tu posesión'" (click)="onClick(list2[i]['equipmentId'], list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['cadete']['id'])" class="btn-confirm">Confirmar recepción</button>
+  </div>
+</div>
+
+        <!-- <div class="table-responsive">
+          <table *ngIf="list2" class="table ">
             <tr>
               <th scope="col">Fecha</th>
-              <th scope="col">Marca</th>
-              <th scope="col">Modelo</th>
+              <th scope="col">Equipo</th>
               <th scope="col">Estado</th>
               <th scope="col">Envío</th>
               <th scope="col">Entregado</th>
@@ -28,24 +38,29 @@
 
             <tr *ngFor="let object of list2 | keyvalue;let i=index">
               <td>
-                {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['operationDate'].substring(0, 10)}}
+                {{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}
               </td>
-              <td>{{list2[i]['mark']}}</td>
-              <td>{{list2[i]['model']}}</td>
+              <td>{{list2[i]['mark']}} {{list2[i]['model']}}</td>
               <td>
-                {{
-                  list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusEquipment']
-                }}
+                {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusEquipment']}}
               </td>
-              <td>{{
-                list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel']
-              }}
-              </td>
-              <td>
-                {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['operationDate'].substring(0, 10)}}
-              </td>
+              <td>{{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel']}}
+            </td>
+            <td *ngIf="list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'En tu posesión' || list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'Completado' ; else elsetd">
+              {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['operationDate'].substring(0, 10)}}
+            </td>
+            <td *ngIf="list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'En tu posesión' ; else elsetd">
+              <button (click)="onClick(list2[i]['equipmentId'], list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['cadete']['id'])" class="btn-confirm">Confirmar</button>
+            </td>
+            <ng-template #elsetd><td></td></ng-template>
             </tr>
           </table>
+        </div> -->
+        <div class="notfound" *ngIf="!haveTravels">
+          <p class="styled-p">Aún no hay nada por aquí.</p>
+        </div>
+        <div *ngIf="loading">
+          <img class="loading" width="40px" src="../../../assets/load.gif">
         </div>
       </form>
     </div>

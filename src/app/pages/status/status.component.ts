@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SignUpService } from 'src/app/services/sign-up.service';
-import { Equipments } from '../../components/model/equipments';
 import { Equipment } from 'src/app/components/model/equipment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-status',
@@ -9,6 +9,23 @@ import { Equipment } from 'src/app/components/model/equipment';
   styleUrls: ['./status.component.sass']
 })
 export class StatusComponent implements OnInit {
+  onClick(travelId: number, cadeteId: number){
+    this.rq.postTravel(travelId,cadeteId).subscribe(resp =>{
+      console.log(resp)
+      Swal.fire({
+        title: 'Confirmado correctamente',
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        confirmButtonColor: '#FD611A',
+        heightAuto:false
+
+      })
+      this.onLoad()
+    }
+      
+      )
+    // console.log(travelId, cadeteId)
+  }
   onChange(search: string) {
 
     const filteredData = this.list.filter((value: {
@@ -71,33 +88,47 @@ export class StatusComponent implements OnInit {
      this.list = respo
     })
   }
-
-  public list !: Equipments
+  public haveTravels = true
+  public loading = true
+  public list !: any
   public list2 !: any 
   public cross !: boolean 
   constructor(private rq: SignUpService) { }
-
-  ngOnInit(): void {
+  onLoad() {
     this.rq.status((JSON.parse(localStorage.getItem('token') || '{}')))
-      .subscribe((respo: Equipments) => {
+      .subscribe((respo: any) => {
+        
         this.list = respo
+        console.log(respo)
+        this.loading = false
 
+        this.list2 = this.list.sort(function (a: Equipment, b: Equipment) {
+          return Number(b.travelEquipmentDTOs[b.travelEquipmentDTOs.length - 1].statusTravel) - Number(a.travelEquipmentDTOs[a.travelEquipmentDTOs.length - 1].statusTravel)
+         })
 
         this.list2 = this.list.filter((value: {
           mark: string | null;model: string | null;failure: string | null;travelEquipmentDTOs: [{
-            operationDate: string;statusTravel: string;statusEquipment: string
+            operationDate: string;statusTravel: string;statusEquipment: string; statusTravelNumber:number; cadete: {id: number}
           }]
         }) => {
-
-
+          
           let statusTravelNumber = parseInt(value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel)
           let statusEquipmentNumber = parseInt(value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel)
-
-          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel = statusTravelNumber < 3 || (statusTravelNumber > 5 && statusTravelNumber < 8) || statusTravelNumber === 10 ? 'Pendiente' :
-            statusTravelNumber == 3 ? 'En curso' : 'Entregado'
-
-          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusEquipment = statusEquipmentNumber > 4 && statusEquipmentNumber < 9 ? 'A reparar' : 'Reparado'
-
+          
+          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravelNumber = statusEquipmentNumber
+          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusTravel =
+          statusTravelNumber == 1 ? 'Retiro pendiente':
+          statusTravelNumber == 2 ? 'Retiro asignado':
+          statusTravelNumber == 3 ? 'Pendiente de entrega':
+          statusTravelNumber == 4 ? 'En todoit':
+          statusTravelNumber == 5 ? 'En todoit':
+          statusTravelNumber == 6 ? 'Cadete asignado':
+          statusTravelNumber == 7 ? 'En viaje':
+          statusTravelNumber == 8 ? 'En tu posesión' : 
+          statusTravelNumber == 8 ? 'A confirmar' : 'Completado'
+          
+          value.travelEquipmentDTOs[value.travelEquipmentDTOs.length - 1].statusEquipment = statusEquipmentNumber > 4 && statusEquipmentNumber < 10 ?  'Reparado' : 'A reparar'
+          
           let dateMatches = false
           let markMatches = false
           let modelMatches = false
@@ -112,7 +143,16 @@ export class StatusComponent implements OnInit {
           }
           return markMatches || modelMatches || dateMatches || statusTravelMatches || statusEquipmentMatches
         })
+        // console.log(this.list2)
+        this.haveTravels = this.list2.length > 0 ? true : false
+        
       })
+
+
+    }
+  ngOnInit(): void {
+    this.onLoad()
+
   }
 
 }

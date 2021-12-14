@@ -10,7 +10,9 @@ export interface Equipments  {
       id: number,
       operationDate: string,
       observation: string,
-      cadete: string,
+      cadete: {
+        id: number
+      },
       operator: {
         id: number,
         email: string,
@@ -19,5 +21,5 @@ export interface Equipments  {
         cellPhone: string
       },
       equipment: string,
-      statusTravel: number
+      statusTravel: number,
     }]}}

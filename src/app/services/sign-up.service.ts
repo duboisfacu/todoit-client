@@ -12,6 +12,7 @@ import {
 } from 'rxjs';
 import { Retirement } from '../components/model/retirement';
 import { Equipments } from '../components/model/equipments';
+import { Travel } from '../components/model/travel';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,9 @@ export class SignUpService {
   register(user: User): Observable < User > {
     return this.http.post < User > ('/api/Alta', user)
   }
-
+  Altaregister(user:any)  {
+    return this.http.post < User > ('/api/Users', user)
+  }
   login(email: string, password: string): Observable < User > {
     return this.http.get < User > (`/api/Login?email=${email}&password=${password}`)
   }
@@ -34,5 +37,10 @@ export class SignUpService {
 
   status(id: number) {
     return this.http.get < Equipments > (`/api/Equipment?clientId=${id}`)
+  }
+
+  postTravel(travelId: number, cadeteId : number ): Observable < Travel > {
+    return this.http.post < Travel > (`/api/Travel?travelId=${travelId}&statusTravel=9&userOperation=2&cadeteId=${cadeteId}&isReasigned=false` , 
+    [travelId ,cadeteId] )
   }
 }

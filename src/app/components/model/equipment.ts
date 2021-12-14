@@ -18,4 +18,6 @@ export interface Equipment  {
       },
       equipment: string,
       statusTravel: number
+      statusTravelNumber: number
+
     }]}

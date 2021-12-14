@@ -14,7 +14,20 @@
           <input (keyup)="onChange(serch.value)" class="form-control" placeholder="Filtrar viaje" #serch>
           <button *ngIf="cross" class="btn-cross"(click)="onDelete(''); serch.value = '' ; serch.focus()">x</button>
         </div>
-        <div class="table-responsive">
+
+
+        <div *ngFor="let object of list2 | keyvalue;let i=index">
+          <div class="card shadow" *ngIf="list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] !== 'Completado'">
+            <p><span>Fecha de pedido:</span> {{list2[i]['travelEquipmentDTOs'][0]['operationDate'].substring(0, 10)}}</p>
+            <p><span>Equipo:</span> {{list2[i]['mark']}} {{list2[i]['model']}}</p>
+            <p><span>Estado del equipo:</span> {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusEquipment']}}</p>            
+            <p><span>Estado del envío:</span> {{list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel']}}</p>
+
+            <button *ngIf="list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['statusTravel'] === 'En tu posesión'" (click)="onClick(list2[i]['equipmentId'], list2[i]['travelEquipmentDTOs'][list2[i]['travelEquipmentDTOs'].length -1]['cadete']['id'])" class="btn-confirm">Confirmar recepción</button>
+          </div>
+        </div>
+        
+        <!-- <div class="table-responsive">
           <table class="table ">
             <tr>
               <th scope="col">Fecha</th>
@@ -45,7 +58,14 @@
 
           </table>
 
+        </div> -->
+        <div class="notfound" *ngIf="!haveTravels">
+          <p class="styled-p">No posees ningún pedido.</p>
         </div>
+        <div *ngIf="loading">
+          <img class="loading" width="40px" src="../../../assets/load.gif">
+        </div>
+        
       </form>
 
     </div>
